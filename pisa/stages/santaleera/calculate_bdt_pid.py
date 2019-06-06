@@ -29,7 +29,7 @@ class calculate_bdt_pid(PiStage):
     ----------
     data
     params
-        name : name of the bdt chosen to calculate the pid
+        bdt_length : name of the bdt chosen to calculate the pid
     input_names
     output_names
     debug_mode
@@ -52,8 +52,8 @@ class calculate_bdt_pid(PiStage):
                  output_specs=None,
                 ):
 
-        # here we register our expected parameters foo and bar so that PISA knows what to expect
-        expected_params = ('name')
+        # here we register our expected parameters so that PISA knows what to expect
+        expected_params = ('bdt_length')
 
         # any in-/output names could be specified here, but we won't need that for now
         input_names = ()
@@ -63,13 +63,17 @@ class calculate_bdt_pid(PiStage):
         # (this may seem a bit abstract right now, but hopefully will become more clear later)
 
         # what are the keys used from the inputs during apply
-        input_apply_keys = ()  #('santa_pid', 'leera_pid', 'track_reco', 'rho36_start_reco', 'z_start_reco', 
-                               # 'rho36_end_reco', 'z_end_reco',)
+        input_apply_keys = ()
                             
         # what are keys added or altered in the calculation used during apply
         output_calc_keys = ('calculated_pid',)
         # what keys are added or altered for the outputs during apply
         output_apply_keys = ('pid',)
+
+        # Load gbc version selected by bdt_length parameter:
+        bdt_path = os.path.join(os.environ['PISA_RESOURCES'], 'data/oscnext_santa_bdts/default_20_meters/alg.pckl')
+        global bdt 
+        bdt = pickle.load(open(bdt_path,'rb'))
 
         # init base class
         super(calculate_bdt_pid, self).__init__(data=data,
@@ -100,20 +104,21 @@ class calculate_bdt_pid(PiStage):
         self.data.data_specs = self.calc_specs
         for container in self.data:
             # also notice that PISA uses strict typing for arrays
-            container['selected_pid'] = np.empty((container.size), dtype=FTYPE)
+            container['calculated_pid'] = np.empty((container.size), dtype=FTYPE)
 
     def compute_function(self):
         """Perform computation"""
         # this function is called when parameters of this stage are changed (and the first time the
         # pipeline is run). Otherwise it is skipped.
 
-        name = self.params.name.m_as('string')
+        bdt_length = self.params.bdt_length.m_as('dimensionless')
 
         for container in self.data:
             # the `.get(WHERE)` statements are necessary for numba to know if these arrays should be read from the host (CPU)
             # or the device (GPU).
             # No worries, this will work without a GPU too
-            calculate_pid(container['santa_pid'].get(WHERE),
+            calculate_pid(bdt_length,
+                          container['pid'].get(WHERE),
                           container['leera_pid'].get(WHERE),
                           container['track_reco'].get(WHERE),
                           container['rho36_start_reco'].get(WHERE),
@@ -158,12 +163,12 @@ signatures = [
 layout = '(),(),(),(),(),(),(),()->()'
 
 @guvectorize(signatures, layout, target=TARGET)
-def calculate_pid(name, santa_pid, leera_pid, track_reco, rho36_start_reco, z_start_reco, rho36_end_reco, z_end_reco, out):
+def calculate_pid(bdt_length, pid, leera_pid, track_reco, rho36_start_reco, z_start_reco, rho36_end_reco, z_end_reco, out):
     """This function loads the pre-trained bdt and applies it to the events features/
     
     Parameters
     ----------
-    santa_pid        : scalar
+    pid        : scalar
             chi^2 ratio (track/cascade)
     leera_pid        : scalar
             llh difference (track-cascade)
@@ -182,10 +187,11 @@ def calculate_pid(name, santa_pid, leera_pid, track_reco, rho36_start_reco, z_st
     """
     # Note that you have to "dereference" scalar arguments as if they are actually arrays
 
-    # Load gbc version selected by name parameter:
-    bdt_path = os.path.join(os.environ['PISA_RESOURCES'], 'data/oscnext_santa_bdts', name, 'alg.pckl')
-    bdt = pickle.load(open(bdt_path,'rb'))
+#     # Load gbc version selected by bdt_length parameter:
+#     bdt_path = os.path.join(os.environ['PISA_RESOURCES'], 'data/oscnext_santa_bdts/', 'default_20_meters'.format(bdt_length), 'alg.pckl')
+#     bdt = pickle.load(open(bdt_path,'rb'))
 
-    feature_list = [santa_pid[0], leera_pid[0], track_reco[0], rho36_start_reco[0], 
+    feature_list = [pid[0], leera_pid[0], track_reco[0], rho36_start_reco[0], 
                     z_start_reco[0], rho36_end_reco[0], z_end_reco[0]]
-    out[0] = bdt.predict_proba(feature_list)[:,1]
+    feature_array = np.array(feature_list).reshape(1,-1)
+    out[0] = bdt.predict_proba(feature_array)[:,1]
