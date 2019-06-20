@@ -521,7 +521,10 @@ class Map(object):
         diff = self - ref
         with np.errstate(divide='ignore', invalid='ignore'):
             fract = self / ref
+<<<<<<< HEAD
         with np.errstate(divide='ignore', invalid='ignore'):
+=======
+>>>>>>> upstream/master
             fractdiff = diff / ref
 
         max_abs_fractdiff = np.nanmax(np.abs(fractdiff.nominal_values))
@@ -741,7 +744,11 @@ class Map(object):
 
         X, Y = np.meshgrid(x, y)
         pcmesh = ax.pcolormesh(X, Y, hist.T, **pcolormesh_kw)
+<<<<<<< HEAD
         if not binlabel_format is None:
+=======
+        if binlabel_format is not None:
+>>>>>>> upstream/master
             X_mid = np.true_divide(X[1:, 1:] + X[1:, :-1], 2)
             Y_mid = np.true_divide(Y[1:, 1:] + Y[:-1, 1:], 2)
             for xi, yi, zi in zip(np.ravel(X_mid), np.ravel(Y_mid), np.ravel(hist.T)):
