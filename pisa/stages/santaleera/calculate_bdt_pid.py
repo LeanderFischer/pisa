@@ -31,6 +31,7 @@ class calculate_bdt_pid(PiStage):
     ----------
     data
     params
+        bdt_string : location of bdt pickle inside PISA_RESOURCES
     input_names
     output_names
     debug_mode
@@ -54,7 +55,7 @@ class calculate_bdt_pid(PiStage):
                 ):
 
         # here we register our expected parameters so that PISA knows what to expect
-        expected_params = ()
+        expected_params = ('bdt_string')
 
         # any in-/output names could be specified here, but we won't need that for now
         input_names = ()
@@ -91,15 +92,18 @@ class calculate_bdt_pid(PiStage):
         assert self.calc_mode == 'events'
         assert self.output_mode is not None
 
+        self.calculate_pid = np.vectorize(self.calculate_pid)
+
     def setup_function(self):
         """Setup the stage"""
         # in case we need to initialize sth, like reading in an external file,
         # or add variables to the data object that we can later populate
         
         # Load gbc version:
-        bdt_path = os.path.join(os.environ['PISA_RESOURCES'], 'data/oscnext_santa_bdts/default_25_meters/alg.pckl')
-        global bdt
-        bdt = pickle.load(open(bdt_path,'rb'))
+        bdt_string = str(self.params.bdt_string.value)
+        bdt_path = os.environ['PISA_RESOURCES'] + bdt_string
+
+        self.bdt = pickle.load(open(bdt_path,'rb'))
 
         # do that in the right representation
         self.data.data_specs = self.calc_specs
@@ -133,7 +137,7 @@ class calculate_bdt_pid(PiStage):
             # set the pid value to the calculated one
             vectorizer.set(container['calculated_pid'], out=container['pid'])
 
-    def calculate_pid(pid, leera_pid, track_reco, rho36_start_reco, z_start_reco, rho36_end_reco, z_end_reco, out):
+    def calculate_pid(self, pid, leera_pid, track_reco, rho36_start_reco, z_start_reco, rho36_end_reco, z_end_reco):
         """This function uses the pre-trained bdt to apply it to the events features
 
         Parameters
@@ -153,8 +157,11 @@ class calculate_bdt_pid(PiStage):
         z_end_reco       : scalar
                 depth (end point)
         """
-
-        feature_list = [pid[0], leera_pid[0], track_reco[0], rho36_start_reco[0], 
-                        z_start_reco[0], rho36_end_reco[0], z_end_reco[0]]
-        feature_array = np.ndarray(feature_list).reshape(1,-1)
-        out[0] = bdt.predict_proba(feature_array)[:,1]
+        feature_list = [[pid, leera_pid, track_reco, rho36_start_reco, 
+                        z_start_reco, rho36_end_reco, z_end_reco]]
+        feature_array = np.array(feature_list)
+        feature_array.reshape(1,-1)
+        if not np.sum(np.isnan(feature_array)):
+            return self.bdt.predict_proba(feature_list)[:,1]
+        else:
+            return np.nan
