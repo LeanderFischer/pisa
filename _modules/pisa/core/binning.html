@@ -881,7 +881,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="n">ureg</span><span class="o">.</span><span class="n">dimensionless</span><span class="p">:</span>
             <span class="n">units_tex</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">units_tex</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39; \; \left( {:~L} \right)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+            <span class="n">units_tex</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39; \; \left[ {:~L} \right]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">name_tex</span> <span class="o">+</span> <span class="n">units_tex</span>
 
