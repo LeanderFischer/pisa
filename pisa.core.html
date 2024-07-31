@@ -3677,7 +3677,7 @@ taken from the name of this Map.</p></li>
 <li><p><strong>xlabelsize</strong> (<em>float</em><em>, </em><em>optional</em>) – Size of the colorbar, x-axis label, y-axis label, and title text</p></li>
 <li><p><strong>ylabelsize</strong> (<em>float</em><em>, </em><em>optional</em>) – Size of the colorbar, x-axis label, y-axis label, and title text</p></li>
 <li><p><strong>titlesize</strong> (<em>float</em><em>, </em><em>optional</em>) – Size of the colorbar, x-axis label, y-axis label, and title text</p></li>
-<li><p><strong>fig_kw</strong> (<em>mapping</em><em>, </em><em>optional</em>) – Keyword arguments passed to call <cite>matplotlib.pyplot..subplots</cite>;
+<li><p><strong>fig_kw</strong> (<em>mapping</em><em>, </em><em>optional</em>) – Keyword arguments passed to call to matplotlib.pyplot.subplots;
 this is only done, however, if <cite>ax</cite> is None and so a new figure
 needs to be created.</p></li>
 <li><p><strong>pcolormesh_kw</strong> (<em>mapping</em><em>, </em><em>optional</em>) – Keyword arguments to pass to call to <cite>matplotlib.pyplot.pcolormesh</cite>
@@ -3707,9 +3707,13 @@ the given number use the second color in <cite>binlabel_colors</cite>. If “aut
 threshold automatically (basically half way).</p></li>
 <li><p><strong>dpi</strong> (<em>int</em><em>, </em><em>optional</em>) – Dots per inch for saved figure. Default: 300</p></li>
 <li><p><strong>bad_color</strong> (<em>string</em><em>, </em><em>optional</em>) – Can choose the color used for “bad” bins (e.g. NaN)</p></li>
-<li><p><strong>pure_bin_names</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, use the (third dimension) bin names as they are defined in binning config, without any formatting.</p></li>
-<li><p><strong>bin_id</strong> (<em>int</em><em>, </em><em>optional</em>) – If the map is a slice of a multi-dim map, this is the index of the slice.</p></li>
-<li><p><strong>full_ax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code>, optional) – If the map is a slice of a multi-dim map, this is the full axis object of the multi-dim map.</p></li>
+<li><p><strong>pure_bin_names</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, use the (third dimension) bin names as they are defined in binning config, without any formatting. Default: <cite>False</cite></p></li>
+<li><p><strong>bin_id</strong> (<em>int</em><em>, </em><em>optional</em>) – If the map is a slice of a multi-dimensional map, this is the index of the slice.
+Used for the internal recursive function call, to keep track of current third dimension slice.
+Default setting produces the correct behaviour for 3-dimensional histograms. Default: <cite>None</cite></p></li>
+<li><p><strong>full_ax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code>, optional) – If the map is a slice of a multi-dimensional map, this is the full axis object of the overall map.
+Used for the internal recursive function call, to keep track of the main axis.
+Default setting produces the correct behaviour for 3-dimensional histograms. Default: <cite>None</cite></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

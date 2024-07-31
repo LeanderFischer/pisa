@@ -721,7 +721,7 @@
 <span class="sd">            Size of the colorbar, x-axis label, y-axis label, and title text</span>
 
 <span class="sd">        fig_kw : mapping, optional</span>
-<span class="sd">            Keyword arguments passed to call `matplotlib.pyplot..subplots`;</span>
+<span class="sd">            Keyword arguments passed to call to matplotlib.pyplot.subplots;</span>
 <span class="sd">            this is only done, however, if `ax` is None and so a new figure</span>
 <span class="sd">            needs to be created.</span>
 
@@ -774,11 +774,15 @@
 <span class="sd">        bad_color : string, optional</span>
 <span class="sd">            Can choose the color used for &quot;bad&quot; bins (e.g. NaN)</span>
 <span class="sd">        pure_bin_names : bool, optional</span>
-<span class="sd">            If True, use the (third dimension) bin names as they are defined in binning config, without any formatting.</span>
+<span class="sd">            If True, use the (third dimension) bin names as they are defined in binning config, without any formatting. Default: `False`</span>
 <span class="sd">        bin_id : int, optional</span>
-<span class="sd">            If the map is a slice of a multi-dim map, this is the index of the slice.</span>
+<span class="sd">            If the map is a slice of a multi-dimensional map, this is the index of the slice.</span>
+<span class="sd">            Used for the internal recursive function call, to keep track of current third dimension slice.</span>
+<span class="sd">            Default setting produces the correct behaviour for 3-dimensional histograms. Default: `None`</span>
 <span class="sd">        full_ax : :class:`matplotlib.axes.Axes`, optional</span>
-<span class="sd">            If the map is a slice of a multi-dim map, this is the full axis object of the multi-dim map.</span>
+<span class="sd">            If the map is a slice of a multi-dimensional map, this is the full axis object of the overall map.</span>
+<span class="sd">            Used for the internal recursive function call, to keep track of the main axis.</span>
+<span class="sd">            Default setting produces the correct behaviour for 3-dimensional histograms. Default: `None`</span>
 
 
 <span class="sd">        Returns</span>
@@ -863,7 +867,7 @@
                     <span class="n">pcolormesh_kw</span><span class="o">=</span><span class="n">pcolormesh_kw</span><span class="p">,</span> <span class="n">colorbar_kw</span><span class="o">=</span><span class="n">colorbar_kw</span><span class="p">,</span> <span class="n">colorbar_label_kw</span><span class="o">=</span><span class="n">colorbar_label_kw</span><span class="p">,</span>
                     <span class="n">binlabel_format</span><span class="o">=</span><span class="n">binlabel_format</span><span class="p">,</span> <span class="n">binlabel_colors</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="s2">&quot;black&quot;</span><span class="p">],</span>
                     <span class="n">binlabel_color_thresh</span><span class="o">=</span><span class="n">binlabel_color_thresh</span><span class="p">,</span> <span class="n">binlabel_stripzeros</span><span class="o">=</span><span class="n">binlabel_stripzeros</span><span class="p">,</span>
-                    <span class="n">bin_id</span> <span class="o">=</span> <span class="n">bin_idx</span><span class="p">,</span> <span class="n">full_ax</span> <span class="o">=</span> <span class="n">full_ax</span>
+                    <span class="n">bin_id</span><span class="o">=</span><span class="n">bin_idx</span><span class="p">,</span> <span class="n">full_ax</span><span class="o">=</span><span class="n">full_ax</span>
                     <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">fmt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
