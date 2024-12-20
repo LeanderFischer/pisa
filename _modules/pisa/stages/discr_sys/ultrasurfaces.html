@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../../">
 <head>
@@ -5,18 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pisa.stages.discr_sys.ultrasurfaces &mdash; PISA 4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../../_static/documentation_options.js?v=9f5556dd"></script>
-        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=9f5556dd"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
@@ -33,9 +31,6 @@
           <a href="../../../../index.html" class="icon icon-home">
             PISA
           </a>
-              <div class="version">
-                4.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -77,21 +72,21 @@
 <span class="sd">PISA pi stage to apply ultrasurface fits from discrete systematics parameterizations</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">collections</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
 
-<span class="kn">import</span> <span class="nn">collections</span>
-<span class="kn">from</span> <span class="nn">pisa</span> <span class="kn">import</span> <span class="n">FTYPE</span><span class="p">,</span> <span class="n">TARGET</span>
+<span class="kn">from</span> <span class="nn">pisa</span> <span class="kn">import</span> <span class="n">FTYPE</span>
+<span class="kn">from</span> <span class="nn">pisa.core.param</span> <span class="kn">import</span> <span class="n">Param</span><span class="p">,</span> <span class="n">ParamSet</span>
 <span class="kn">from</span> <span class="nn">pisa.core.stage</span> <span class="kn">import</span> <span class="n">Stage</span>
-<span class="kn">from</span> <span class="nn">pisa.core.binning</span> <span class="kn">import</span> <span class="n">MultiDimBinning</span>
 <span class="kn">from</span> <span class="nn">pisa.utils.log</span> <span class="kn">import</span> <span class="n">logging</span>
-<span class="kn">from</span> <span class="nn">pisa.utils.profiler</span> <span class="kn">import</span> <span class="n">profile</span><span class="p">,</span> <span class="n">line_profile</span>
-<span class="kn">from</span> <span class="nn">pisa.utils.log</span> <span class="kn">import</span> <span class="n">set_verbosity</span><span class="p">,</span> <span class="n">Levels</span>
-
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span><span class="p">,</span> <span class="n">chain</span>
+<span class="kn">from</span> <span class="nn">pisa.utils.profiler</span> <span class="kn">import</span> <span class="n">profile</span>
+<span class="kn">from</span> <span class="nn">pisa.utils.resources</span> <span class="kn">import</span> <span class="n">find_resource</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;ultrasurfaces&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;init_test&quot;</span>
 <span class="p">]</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;A. Trettin, L. Fischer&quot;</span>
@@ -113,7 +108,7 @@
 
 <div class="viewcode-block" id="ultrasurfaces">
 <a class="viewcode-back" href="../../../../pisa.stages.discr_sys.html#pisa.stages.discr_sys.ultrasurfaces.ultrasurfaces">[docs]</a>
-<span class="k">class</span> <span class="nc">ultrasurfaces</span><span class="p">(</span><span class="n">Stage</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ultrasurfaces</span><span class="p">(</span><span class="n">Stage</span><span class="p">):</span>  <span class="c1"># pylint: disable=invalid-name</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Service to apply ultrasurface parameterisation stored in a feather file.</span>
 
@@ -162,7 +157,7 @@
         <span class="k">assert</span> <span class="n">std_kwargs</span><span class="p">[</span><span class="s2">&quot;calc_mode&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;events&quot;</span>
 
         <span class="c1"># Store args</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fit_results_file</span> <span class="o">=</span> <span class="n">fit_results_file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_results_file</span> <span class="o">=</span> <span class="n">find_resource</span><span class="p">(</span><span class="n">fit_results_file</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">varnames</span> <span class="o">=</span> <span class="n">varnames</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">approx_exponential</span> <span class="o">=</span> <span class="n">approx_exponential</span>
 
@@ -191,9 +186,15 @@
                     <span class="sa">f</span><span class="s2">&quot;Support range is missing for parameter </span><span class="si">{</span><span class="n">pname</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
 
+        <span class="n">expected_container_keys</span> <span class="o">=</span> <span class="n">varnames</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;weights&#39;</span><span class="p">]</span>
+        <span class="c1"># &#39;true_energy&#39; is hard-coded to get sample size</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="s1">&#39;true_energy&#39;</span> <span class="ow">in</span> <span class="n">expected_container_keys</span><span class="p">:</span>
+            <span class="n">expected_container_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;true_energy&#39;</span><span class="p">)</span>
+
         <span class="c1"># -- Initialize base class -- #</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">expected_params</span><span class="o">=</span><span class="n">param_names</span><span class="p">,</span>
+            <span class="n">expected_container_keys</span><span class="o">=</span><span class="n">expected_container_keys</span><span class="p">,</span>
             <span class="o">**</span><span class="n">std_kwargs</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -374,6 +375,46 @@
 <span class="k">def</span> <span class="nf">grad_shift_inplace</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="n">out</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">grads</span><span class="p">):</span>
         <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">shift</span> <span class="o">*</span> <span class="n">g</span>
+
+
+<div class="viewcode-block" id="init_test">
+<a class="viewcode-back" href="../../../../pisa.stages.discr_sys.html#pisa.stages.discr_sys.ultrasurfaces.init_test">[docs]</a>
+<span class="k">def</span> <span class="nf">init_test</span><span class="p">(</span><span class="o">**</span><span class="n">param_kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Instantiation example&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="kn">from</span> <span class="nn">pisa</span> <span class="kn">import</span> <span class="n">CACHE_DIR</span>
+    <span class="kn">from</span> <span class="nn">pisa.utils.random_numbers</span> <span class="kn">import</span> <span class="n">get_random_state</span>
+
+    <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span> <span class="o">=</span> <span class="s1">&#39;opt_eff_overall&#39;</span><span class="p">,</span> <span class="s1">&#39;ice_scattering&#39;</span>
+    <span class="n">param_set</span> <span class="o">=</span> <span class="n">ParamSet</span><span class="p">([</span>
+        <span class="n">Param</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">p1</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">**</span><span class="n">param_kwargs</span><span class="p">),</span>
+        <span class="n">Param</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">p2</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">**</span><span class="n">param_kwargs</span><span class="p">)</span>
+    <span class="p">])</span>
+    <span class="c1"># We cannot just use `value` attribute here (service unable to deal with pint quantity)</span>
+    <span class="n">nominal_points</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">p1</span><span class="p">:</span> <span class="n">param_set</span><span class="p">[</span><span class="n">p1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">m_as</span><span class="p">(</span><span class="s1">&#39;dimensionless&#39;</span><span class="p">),</span>
+        <span class="n">p2</span><span class="p">:</span> <span class="n">param_set</span><span class="p">[</span><span class="n">p2</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">m_as</span><span class="p">(</span><span class="s1">&#39;dimensionless&#39;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1"># create a test file containing 100 gradients on the fly</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="n">random_state</span> <span class="o">=</span> <span class="n">get_random_state</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">varnames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;inelasticity&#39;</span><span class="p">,</span> <span class="s1">&#39;reco_energy&#39;</span><span class="p">]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="p">{</span><span class="n">var</span><span class="p">:</span> <span class="n">random_state</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">FTYPE</span><span class="p">)</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">varnames</span><span class="p">}</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="sa">f</span><span class="s1">&#39;grad_</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">random_state</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">FTYPE</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">param_set</span><span class="o">.</span><span class="n">names</span><span class="p">})</span>
+    <span class="c1"># also add an interaction term</span>
+    <span class="n">df</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;grad__</span><span class="si">{</span><span class="n">p1</span><span class="si">}</span><span class="s1">__</span><span class="si">{</span><span class="n">p2</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">random_state</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">FTYPE</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">FTYPE</span><span class="p">)</span>
+    <span class="n">fpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">CACHE_DIR</span><span class="p">,</span> <span class="s1">&#39;test_us_file.feather&#39;</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">to_feather</span><span class="p">(</span><span class="n">fpath</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ultrasurfaces</span><span class="p">(</span>
+        <span class="n">params</span><span class="o">=</span><span class="n">param_set</span><span class="p">,</span> <span class="n">fit_results_file</span><span class="o">=</span><span class="n">fpath</span><span class="p">,</span> <span class="n">varnames</span><span class="o">=</span><span class="n">varnames</span><span class="p">,</span>
+        <span class="n">nominal_points</span><span class="o">=</span><span class="n">nominal_points</span><span class="p">,</span> <span class="n">calc_mode</span><span class="o">=</span><span class="s1">&#39;events&#39;</span>
+    <span class="p">)</span></div>
+
 </pre></div>
 
            </div>

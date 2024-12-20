@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../../">
 <head>
@@ -5,18 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pisa.stages.data.meows_loader &mdash; PISA 4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../../_static/documentation_options.js?v=9f5556dd"></script>
-        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=9f5556dd"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
@@ -33,9 +31,6 @@
           <a href="../../../../index.html" class="icon icon-home">
             PISA
           </a>
-              <div class="version">
-                4.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -74,28 +69,24 @@
              
   <h1>Source code for pisa.stages.data.meows_loader</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">A class to load in the MEOWS hdf5 files </span>
+<span class="sd">A class to load in the MEOWS hdf5 files</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">curses</span> <span class="kn">import</span> <span class="n">raw</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">h5py</span> <span class="k">as</span> <span class="nn">h5</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
 
 <span class="kn">from</span> <span class="nn">pisa</span> <span class="kn">import</span> <span class="n">FTYPE</span>
 <span class="kn">from</span> <span class="nn">pisa.core.stage</span> <span class="kn">import</span> <span class="n">Stage</span>
-<span class="kn">from</span> <span class="nn">pisa.utils</span> <span class="kn">import</span> <span class="n">vectorizer</span>
-<span class="kn">from</span> <span class="nn">pisa.utils.profiler</span> <span class="kn">import</span> <span class="n">profile</span>
 <span class="kn">from</span> <span class="nn">pisa.core.container</span> <span class="kn">import</span> <span class="n">Container</span>
-<span class="kn">from</span> <span class="nn">pisa.core.events_pi</span> <span class="kn">import</span> <span class="n">EventsPi</span>
+<span class="kn">from</span> <span class="nn">pisa.utils.log</span> <span class="kn">import</span> <span class="n">logging</span>
 <span class="kn">from</span> <span class="nn">pisa.utils.resources</span> <span class="kn">import</span> <span class="n">find_resource</span>
 
 
 <div class="viewcode-block" id="meows_loader">
 <a class="viewcode-back" href="../../../../pisa.stages.data.html#pisa.stages.data.meows_loader.meows_loader">[docs]</a>
-<span class="k">class</span> <span class="nc">meows_loader</span><span class="p">(</span><span class="n">Stage</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">meows_loader</span><span class="p">(</span><span class="n">Stage</span><span class="p">):</span>  <span class="c1"># pylint: disable=invalid-name</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Docstring incoming...</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -104,7 +95,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">events_file</span> <span class="o">=</span> <span class="n">events_file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_n_files</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_files</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output_names</span> <span class="o">=</span> <span class="n">output_names</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">expected_params</span><span class="o">=</span><span class="p">(),</span> <span class="o">**</span><span class="n">std_kwargs</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">expected_params</span><span class="o">=</span><span class="p">(),</span>
+            <span class="n">expected_container_keys</span><span class="o">=</span><span class="p">(),</span>
+            <span class="o">**</span><span class="n">std_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="meows_loader.setup_function">
 <a class="viewcode-back" href="../../../../pisa.stages.data.html#pisa.stages.data.meows_loader.meows_loader.setup_function">[docs]</a>
@@ -115,7 +111,7 @@
 <span class="sd">        We load the first data in specifically to setup the containers, and afterwards go through appending to the end of those arrays</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loading data...&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Loading MEOWS data...&quot;</span><span class="p">)</span>
         <span class="n">st</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
         <span class="n">raw_data</span> <span class="o">=</span> <span class="n">h5</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">find_resource</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events_file</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
 
@@ -168,7 +164,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">add_container</span><span class="p">(</span><span class="n">container</span><span class="p">)</span>
 
         <span class="n">ed</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; done! Took </span><span class="si">{}</span><span class="s2"> minutes&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">((</span><span class="n">ed</span> <span class="o">-</span> <span class="n">st</span><span class="p">)</span> <span class="o">/</span> <span class="mi">60</span><span class="p">))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Done! Took </span><span class="si">{}</span><span class="s2"> minutes&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">((</span><span class="n">ed</span> <span class="o">-</span> <span class="n">st</span><span class="p">)</span> <span class="o">/</span> <span class="mi">60</span><span class="p">))</span>
         <span class="n">raw_data</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
@@ -182,6 +178,40 @@
             <span class="n">container</span><span class="p">[</span><span class="s2">&quot;weights&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">container</span><span class="p">[</span><span class="s2">&quot;initial_weights&quot;</span><span class="p">])</span>
             <span class="n">container</span><span class="p">[</span><span class="s2">&quot;astro_weights&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">container</span><span class="p">[</span><span class="s2">&quot;initial_weights&quot;</span><span class="p">])</span></div>
 </div>
+
+
+
+<div class="viewcode-block" id="init_test">
+<a class="viewcode-back" href="../../../../pisa.stages.data.html#pisa.stages.data.meows_loader.init_test">[docs]</a>
+<span class="k">def</span> <span class="nf">init_test</span><span class="p">(</span><span class="o">**</span><span class="n">param_kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Instantiation example&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="kn">from</span> <span class="nn">pisa</span> <span class="kn">import</span> <span class="n">CACHE_DIR</span>
+    <span class="kn">from</span> <span class="nn">pisa.utils.fileio</span> <span class="kn">import</span> <span class="n">to_file</span>
+    <span class="kn">from</span> <span class="nn">pisa.utils.random_numbers</span> <span class="kn">import</span> <span class="n">get_random_state</span>
+
+    <span class="n">expected_events_keys</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;oneweight&#39;</span><span class="p">,</span> <span class="s1">&#39;TotalColumnDepth&#39;</span><span class="p">,</span> <span class="s1">&#39;FinalStateX&#39;</span><span class="p">,</span> <span class="s1">&#39;FinalStateY&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;NuEnergy&#39;</span><span class="p">,</span> <span class="s1">&#39;NuZenith&#39;</span><span class="p">,</span> <span class="s1">&#39;MuExEnergy&#39;</span><span class="p">,</span> <span class="s1">&#39;MuExZenith&#39;</span><span class="p">,</span> <span class="s1">&#39;pid&#39;</span><span class="p">,</span> <span class="s1">&#39;PrimaryType&#39;</span>
+    <span class="p">]</span>
+    <span class="c1"># note: n_files seems to be completely irrelevant to the service</span>
+    <span class="n">n_files</span> <span class="o">=</span> <span class="mi">2024</span>
+    <span class="n">random_state</span> <span class="o">=</span> <span class="n">get_random_state</span><span class="p">(</span><span class="n">n_files</span><span class="p">)</span>
+    <span class="n">n_evts</span> <span class="o">=</span> <span class="mi">48</span>
+    <span class="n">raw_data</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">expected_events_keys</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;PrimaryType&#39;</span><span class="p">:</span>
+            <span class="c1"># make valid PDG nu type/flavour codes</span>
+            <span class="n">raw_data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="o">-</span><span class="mi">14</span><span class="p">,</span> <span class="o">-</span><span class="mi">16</span><span class="p">]</span> <span class="o">*</span> <span class="mi">8</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">raw_data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">random_state</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n_evts</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">FTYPE</span><span class="p">)</span>
+
+    <span class="n">fpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">CACHE_DIR</span><span class="p">,</span> <span class="s1">&#39;meows_loader_test_file.hdf5&#39;</span><span class="p">)</span>
+    <span class="n">to_file</span><span class="p">(</span><span class="n">raw_data</span><span class="p">,</span> <span class="n">fpath</span><span class="p">,</span> <span class="n">warn</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">meows_loader</span><span class="p">(</span>
+        <span class="n">events_file</span><span class="o">=</span><span class="n">fpath</span><span class="p">,</span> <span class="n">n_files</span><span class="o">=</span><span class="n">n_files</span><span class="p">,</span> <span class="n">output_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;nue&#39;</span><span class="p">,</span> <span class="s1">&#39;nutau_bar&#39;</span><span class="p">]</span>
+    <span class="p">)</span></div>
 
 </pre></div>
 

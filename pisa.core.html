@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
@@ -6,18 +8,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pisa.core package &mdash; PISA 4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=9f5556dd"></script>
-        <script src="_static/doctools.js?v=9a2dae69"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=9f5556dd"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -36,9 +34,6 @@
           <a href="index.html" class="icon icon-home">
             PISA
           </a>
-              <div class="version">
-                4.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -1909,10 +1904,25 @@ are provided.</p>
 <dt class="sig sig-object py" id="pisa.core.container.Container">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pisa.core.container.</span></span><span class="sig-name descname"><span class="pre">Container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">representation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'events'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/container.html#Container"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.container.Container" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Container to hold data in multiple representations</p>
+<section id="parameters">
+<h3>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>name<span class="classifier">str</span></dt><dd><p>name of container</p>
+</dd>
+<dt>representation<span class="classifier">hashable object, e.g. str or MultiDimBinning</span></dt><dd><p>Representation in which to initialize the container</p>
+</dd>
+</dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="pisa.core.container.Container.all_keys">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_keys</span></span><a class="headerlink" href="#pisa.core.container.Container.all_keys" title="Link to this definition"></a></dt>
 <dd><p>return all available keys, regardless of representation</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pisa.core.container.Container.all_keys_incl_aux_data">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_keys_incl_aux_data</span></span><a class="headerlink" href="#pisa.core.container.Container.all_keys_incl_aux_data" title="Link to this definition"></a></dt>
+<dd><p>same as <cite>all_keys</cite>, but including auxiliary data</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1986,6 +1996,12 @@ are provided.</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">keys</span></span><a class="headerlink" href="#pisa.core.container.Container.keys" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="pisa.core.container.Container.keys_incl_aux_data">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">keys_incl_aux_data</span></span><a class="headerlink" href="#pisa.core.container.Container.keys_incl_aux_data" title="Link to this definition"></a></dt>
+<dd><p>same as keys, but including auxiliary data</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pisa.core.container.Container.mark_changed">
 <span class="sig-name descname"><span class="pre">mark_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/container.html#Container.mark_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.container.Container.mark_changed" title="Link to this definition"></a></dt>
@@ -2033,7 +2049,8 @@ are provided.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pisa.core.container.Container.set_aux_data">
 <span class="sig-name descname"><span class="pre">set_aux_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/container.html#Container.set_aux_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.container.Container.set_aux_data" title="Link to this definition"></a></dt>
-<dd><p>Add any auxillary data, which will not be translated or tied to a specific representation</p>
+<dd><p>Add any auxiliary data, which will not be translated or
+tied to a specific representation</p>
 </dd></dl>
 
 <dl class="py property">
@@ -2065,11 +2082,12 @@ src_representation : representation present in container</p>
 <dd><p>Get an Array containing the unrolled binning</p>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pisa.core.container.ContainerSet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pisa.core.container.</span></span><span class="sig-name descname"><span class="pre">ContainerSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">containers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_specs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/container.html#ContainerSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.container.ContainerSet" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pisa.core.container.</span></span><span class="sig-name descname"><span class="pre">ContainerSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">containers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">representation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/container.html#ContainerSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.container.ContainerSet" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class to hold a set of container objects</p>
 <dl class="field-list simple">
@@ -2077,19 +2095,20 @@ src_representation : representation present in container</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<em>str</em>)</p></li>
 <li><p><strong>containers</strong> (<em>list</em><em> or </em><em>None</em>)</p></li>
-<li><p><strong>data_specs</strong> (<a class="reference internal" href="#pisa.core.binning.MultiDimBinning" title="pisa.core.binning.MultiDimBinning"><em>MultiDimBinning</em></a><em>, </em><em>&quot;events&quot;</em><em> or </em><em>None</em>)</p></li>
+<li><p><strong>representation</strong> (<a class="reference internal" href="#pisa.core.binning.MultiDimBinning" title="pisa.core.binning.MultiDimBinning"><em>MultiDimBinning</em></a><em>, </em><em>&quot;events&quot;</em><em> or </em><em>None</em>)</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pisa.core.container.ContainerSet.add_container">
 <span class="sig-name descname"><span class="pre">add_container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">container</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/container.html#ContainerSet.add_container"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.container.ContainerSet.add_container" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Append a container whose name mustn’t exist yet</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pisa.core.container.ContainerSet.get_mapset">
 <span class="sig-name descname"><span class="pre">get_mapset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/container.html#ContainerSet.get_mapset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.container.ContainerSet.get_mapset" title="Link to this definition"></a></dt>
-<dd><p>For a given key, get a PISA MapSet</p>
+<dd><p>For a given key, get a MapSet</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -2106,10 +2125,23 @@ src_representation : representation present in container</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="pisa.core.container.ContainerSet.get_shared_keys">
+<span class="sig-name descname"><span class="pre">get_shared_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rep_indep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/container.html#ContainerSet.get_shared_keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.container.ContainerSet.get_shared_keys" title="Link to this definition"></a></dt>
+<dd><p>Get a tuple of all keys shared among contained containers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rep_indep</strong> (<em>bool</em>) – Whether all keys should be considered, not just those in
+the current representation (default: <cite>True</cite>)</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="pisa.core.container.ContainerSet.is_map">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_map</span></span><a class="headerlink" href="#pisa.core.container.ContainerSet.is_map" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Is current representation a map/grid</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pisa.core.container.ContainerSet.link_containers">
@@ -2150,9 +2182,9 @@ treated as a single (virtual) container for binned data</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class providing a virtual container for linked individual containers</p>
 <p>It should just behave like a normal container</p>
-<p>For reading, it just uses one container as a representative (no checkng at the mment
-if the others actually contain the same data)</p>
-<p>For writting, it creates one object that is added to all containers</p>
+<p>For reading, it just uses one container as a representative
+(no checking at the moment if the others actually contain the same data)</p>
+<p>For writing, it creates one object that is added to all containers</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -2164,12 +2196,15 @@ if the others actually contain the same data)</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pisa.core.container.VirtualContainer.mark_changed">
 <span class="sig-name descname"><span class="pre">mark_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/container.html#VirtualContainer.mark_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.container.VirtualContainer.mark_changed" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Copy data under this key from representative container into
+all others and then mark all as changed (see <cite>Container.mark_changed</cite>)</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pisa.core.container.VirtualContainer.mark_valid">
 <span class="sig-name descname"><span class="pre">mark_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/container.html#VirtualContainer.mark_valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.container.VirtualContainer.mark_valid" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>See <cite>Container.mark_valid</cite></p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pisa.core.container.VirtualContainer.representation">
@@ -2179,7 +2214,8 @@ if the others actually contain the same data)</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pisa.core.container.VirtualContainer.set_aux_data">
 <span class="sig-name descname"><span class="pre">set_aux_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/container.html#VirtualContainer.set_aux_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.container.VirtualContainer.set_aux_data" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>See <cite>Container.set_aux_data</cite></p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pisa.core.container.VirtualContainer.shape">
@@ -2194,7 +2230,7 @@ if the others actually contain the same data)</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pisa.core.container.VirtualContainer.unlink">
 <span class="sig-name descname"><span class="pre">unlink</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/container.html#VirtualContainer.unlink"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.container.VirtualContainer.unlink" title="Link to this definition"></a></dt>
-<dd><p>Reset flag and copy all accessed keys</p>
+<dd><p>Reset link flag and copy all accessed keys</p>
 </dd></dl>
 
 </dd></dl>
@@ -2298,6 +2334,13 @@ pipelines in the respective distribution maker have MC events</p>
 <dt class="sig sig-object py" id="pisa.core.detectors.Detectors.randomize_free_params">
 <span class="sig-name descname"><span class="pre">randomize_free_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/detectors.html#Detectors.randomize_free_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.detectors.Detectors.randomize_free_params" title="Link to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pisa.core.detectors.Detectors.report_profile">
+<span class="sig-name descname"><span class="pre">report_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_num_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/detectors.html#Detectors.report_profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.detectors.Detectors.report_profile" title="Link to this definition"></a></dt>
+<dd><p>Report timing information on contained distribution makers.
+See <cite>Pipeline.report_profile</cite> for details.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pisa.core.detectors.Detectors.reset_all">
@@ -2512,6 +2555,13 @@ pipelines have MC events</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pisa.core.distribution_maker.DistributionMaker.report_profile">
+<span class="sig-name descname"><span class="pre">report_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_num_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/distribution_maker.html#DistributionMaker.report_profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.distribution_maker.DistributionMaker.report_profile" title="Link to this definition"></a></dt>
+<dd><p>Report timing information on contained pipelines.
+See <cite>Pipeline.report_profile</cite> for details.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pisa.core.distribution_maker.DistributionMaker.reset_all">
 <span class="sig-name descname"><span class="pre">reset_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/distribution_maker.html#DistributionMaker.reset_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.distribution_maker.DistributionMaker.reset_all" title="Link to this definition"></a></dt>
 <dd><p>Reset both free and fixed parameters to their nominal values.</p>
@@ -2526,7 +2576,8 @@ pipelines have MC events</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pisa.core.distribution_maker.DistributionMaker.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/distribution_maker.html#DistributionMaker.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.distribution_maker.DistributionMaker.run" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Run all pipelines</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pisa.core.distribution_maker.DistributionMaker.select_params">
@@ -5566,8 +5617,9 @@ So we go to the first stage we find that has one of the original parameters and 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pisa.core.pipeline.Pipeline.get_outputs">
-<span class="sig-name descname"><span class="pre">get_outputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_binning</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/pipeline.html#Pipeline.get_outputs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.pipeline.Pipeline.get_outputs" title="Link to this definition"></a></dt>
-<dd><p>Get MapSet output</p>
+<span class="sig-name descname"><span class="pre">get_outputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">get_outputs_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/pipeline.html#Pipeline.get_outputs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.pipeline.Pipeline.get_outputs" title="Link to this definition"></a></dt>
+<dd><p>Wrapper around <cite>_get_outputs</cite>. The latter might
+have quite some overhead compared to <cite>run</cite> alone</p>
 </dd></dl>
 
 <dl class="py property">
@@ -5630,13 +5682,26 @@ contained stage.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pisa.core.pipeline.Pipeline.report_profile">
-<span class="sig-name descname"><span class="pre">report_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/pipeline.html#Pipeline.report_profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.pipeline.Pipeline.report_profile" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">report_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_num_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/pipeline.html#Pipeline.report_profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.pipeline.Pipeline.report_profile" title="Link to this definition"></a></dt>
+<dd><p>Report timing information on pipeline and contained services</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>detailed</strong> (<em>bool</em><em>, </em><em>default False</em>) – Whether to increase level of detail</p></li>
+<li><p><strong>format_num_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – <dl class="simple">
+<dt>Dictionary containing arguments passed to <cite>utils.format.format_num</cite>.</dt><dd><p>Will display each number with three decimal digits by default.</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pisa.core.pipeline.Pipeline.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/pipeline.html#Pipeline.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.pipeline.Pipeline.run" title="Link to this definition"></a></dt>
-<dd><p>Run the pipeline to compute</p>
+<dd><p>Wrapper around <cite>_run_function</cite></p>
 </dd></dl>
 
 <dl class="py method">
@@ -5659,7 +5724,7 @@ contained stage.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pisa.core.pipeline.Pipeline.setup">
 <span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/pipeline.html#Pipeline.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.pipeline.Pipeline.setup" title="Link to this definition"></a></dt>
-<dd><p>Setup (reset) all stages</p>
+<dd><p>Wrapper around <cite>_setup_function</cite></p>
 </dd></dl>
 
 <dl class="py property">
@@ -5896,7 +5961,7 @@ bounds</p>
 functionality is built-in.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pisa.core.stage.Stage">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pisa.core.stage.</span></span><span class="sig-name descname"><span class="pre">Stage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/stage.html#Stage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.stage.Stage" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pisa.core.stage.</span></span><span class="sig-name descname"><span class="pre">Stage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_container_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supported_reps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_standalone_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/stage.html#Stage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.stage.Stage" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>PISA stage base class.</p>
 <p>Specialization should be done via subclasses.</p>
@@ -5906,6 +5971,7 @@ functionality is built-in.</p>
 <li><p><strong>data</strong> (<a class="reference internal" href="#pisa.core.container.ContainerSet" title="pisa.core.container.ContainerSet"><em>ContainerSet</em></a><em> or </em><em>None</em>) – object to be passed along</p></li>
 <li><p><strong>params</strong> (<a class="reference internal" href="#pisa.core.param.ParamSelector" title="pisa.core.param.ParamSelector"><em>ParamSelector</em></a><em>, </em><em>dict</em><em> of </em><em>ParamSelector kwargs</em><em>, </em><a class="reference internal" href="#pisa.core.param.ParamSet" title="pisa.core.param.ParamSet"><em>ParamSet</em></a><em>, or </em><em>object instantiable to ParamSet</em>)</p></li>
 <li><p><strong>expected_params</strong> (<em>list</em><em> of </em><em>strings</em>) – List containing required <cite>params</cite> names.</p></li>
+<li><p><strong>expected_container_keys</strong> (<em>list</em><em> of </em><em>strings</em>) – List containing required container keys.</p></li>
 <li><p><strong>debug_mode</strong> (<em>None</em><em>, </em><em>bool</em><em>, or </em><em>string</em>) – <p>If None, False, or empty string, the stage runs normally.</p>
 <p>Otherwise, the stage runs in debug mode. This disables caching
 (TODO: where or how?).
@@ -5915,9 +5981,16 @@ the <cite>self.debug_mode</cite> attribute.</p>
 </p></li>
 <li><p><strong>error_method</strong> (<em>None</em><em> or </em><em>string</em><em> (</em><em>not enforced</em><em>)</em>) – An option to define one or more dedicated error calculation methods
 for the stage transforms or outputs</p></li>
+<li><p><strong>supported_reps</strong> (<em>dict</em>) – Dictionary containing the representations allowed for calc_mode and
+apply_mode. If nothing is specified, Container.array_representations
+plus MultiDimBinning is assumed. Should have keys <cite>calc_mode</cite> and/or
+<cite>apply_mode</cite>, they will be created if not there.</p></li>
 <li><p><strong>calc_mode</strong> (<a class="reference internal" href="#pisa.core.binning.MultiDimBinning" title="pisa.core.binning.MultiDimBinning"><em>pisa.core.binning.MultiDimBinning</em></a><em>, </em><em>str</em><em>, or </em><em>None</em>) – Specify the default data representation for <cite>setup()</cite> and <cite>compute()</cite></p></li>
 <li><p><strong>apply_mode</strong> (<a class="reference internal" href="#pisa.core.binning.MultiDimBinning" title="pisa.core.binning.MultiDimBinning"><em>pisa.core.binning.MultiDimBinning</em></a><em>, </em><em>str</em><em>, or </em><em>None</em>) – Specify the default data representation for <cite>apply()</cite></p></li>
 <li><p><strong>profile</strong> (<em>bool</em>) – If True, perform timings for the setup, compute, and apply functions.</p></li>
+<li><p><strong>in_standalone_mode</strong> (<em>bool</em>) – If True, assume stage is not part of a pipeline. Affects whether
+<cite>setup()</cite> can be automatically rerun whenever <cite>calc_mode</cite> is
+changed.</p></li>
 </ul>
 </dd>
 </dl>
@@ -5932,6 +6005,16 @@ for the stage transforms or outputs</p></li>
 <dd><p>Implement in services (subclasses of Stage)</p>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="pisa.core.stage.Stage.apply_mode">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">apply_mode</span></span><a class="headerlink" href="#pisa.core.stage.Stage.apply_mode" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pisa.core.stage.Stage.calc_mode">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">calc_mode</span></span><a class="headerlink" href="#pisa.core.stage.Stage.calc_mode" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pisa.core.stage.Stage.compute">
 <span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/stage.html#Stage.compute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.stage.Stage.compute" title="Link to this definition"></a></dt>
@@ -5941,6 +6024,13 @@ for the stage transforms or outputs</p></li>
 <dt class="sig sig-object py" id="pisa.core.stage.Stage.compute_function">
 <span class="sig-name descname"><span class="pre">compute_function</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/stage.html#Stage.compute_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.stage.Stage.compute_function" title="Link to this definition"></a></dt>
 <dd><p>Implement in services (subclasses of Stage)</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pisa.core.stage.Stage.data">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#pisa.core.stage.Stage.data" title="Link to this definition"></a></dt>
+<dd><p>Data based on which stage may make computations and which it may
+modify</p>
 </dd></dl>
 
 <dl class="py property">
@@ -5957,6 +6047,13 @@ indicates a debug mode.</p>
 <dd><p>Read-only attribute indicating whether or not the stage will compute
 errors for its transforms and outputs (whichever is applicable). Errors
 on inputs are propagated regardless of this setting.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pisa.core.stage.Stage.expected_container_keys">
+<span class="sig-name descname"><span class="pre">expected_container_keys</span></span><a class="headerlink" href="#pisa.core.stage.Stage.expected_container_keys" title="Link to this definition"></a></dt>
+<dd><p>The full set of keys that is expected to be present in each
+container within <cite>data</cite></p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -5979,6 +6076,12 @@ on inputs are propagated regardless of this setting.</p>
 provenance of persisted (on-disk) objects.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pisa.core.stage.Stage.in_standalone_mode">
+<span class="sig-name descname"><span class="pre">in_standalone_mode</span></span><a class="headerlink" href="#pisa.core.stage.Stage.in_standalone_mode" title="Link to this definition"></a></dt>
+<dd><p>Whether stage is standalone or part of a pipeline</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pisa.core.stage.Stage.include_attrs_for_hashes">
 <span class="sig-name descname"><span class="pre">include_attrs_for_hashes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attrs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/stage.html#Stage.include_attrs_for_hashes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.stage.Stage.include_attrs_for_hashes" title="Link to this definition"></a></dt>
@@ -5999,7 +6102,15 @@ invoked.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="pisa.core.stage.Stage.is_map">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_map</span></span><a class="headerlink" href="#pisa.core.stage.Stage.is_map" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>See ContainerSet.is_map for documentation</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pisa.core.stage.Stage.param_hash">
+<span class="sig-name descname"><span class="pre">param_hash</span></span><a class="headerlink" href="#pisa.core.stage.Stage.param_hash" title="Link to this definition"></a></dt>
+<dd><p>Hash of stage params. Also serves as an indicator of whether <cite>setup()</cite>
+has already been called.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pisa.core.stage.Stage.param_selections">
@@ -6013,10 +6124,17 @@ invoked.</p>
 <dd><p>Params</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pisa.core.stage.Stage.profile">
+<span class="sig-name descname"><span class="pre">profile</span></span><a class="headerlink" href="#pisa.core.stage.Stage.profile" title="Link to this definition"></a></dt>
+<dd><p>Whether to perform timings</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pisa.core.stage.Stage.report_profile">
-<span class="sig-name descname"><span class="pre">report_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/stage.html#Stage.report_profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.stage.Stage.report_profile" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">report_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">format_num_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pisa/core/stage.html#Stage.report_profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pisa.core.stage.Stage.report_profile" title="Link to this definition"></a></dt>
+<dd><p>Report timing information on calls to setup, compute, and apply</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pisa.core.stage.Stage.run">

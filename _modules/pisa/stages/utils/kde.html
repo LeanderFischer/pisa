@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../../">
 <head>
@@ -5,18 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pisa.stages.utils.kde &mdash; PISA 4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../../_static/documentation_options.js?v=9f5556dd"></script>
-        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=9f5556dd"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
@@ -33,9 +31,6 @@
           <a href="../../../../index.html" class="icon icon-home">
             PISA
           </a>
-              <div class="version">
-                4.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -77,22 +72,22 @@
 <span class="sd">Stage to transform arrays with weights into KDE maps</span>
 <span class="sd">that represent event counts</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
-<span class="kn">from</span> <span class="nn">pisa</span> <span class="kn">import</span> <span class="n">FTYPE</span><span class="p">,</span> <span class="n">TARGET</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+
 <span class="kn">from</span> <span class="nn">pisa.core.stage</span> <span class="kn">import</span> <span class="n">Stage</span>
 <span class="kn">from</span> <span class="nn">pisa.core.binning</span> <span class="kn">import</span> <span class="n">MultiDimBinning</span><span class="p">,</span> <span class="n">OneDimBinning</span>
 <span class="kn">from</span> <span class="nn">pisa.utils.log</span> <span class="kn">import</span> <span class="n">logging</span>
 <span class="kn">from</span> <span class="nn">pisa.utils.profiler</span> <span class="kn">import</span> <span class="n">profile</span>
-<span class="kn">from</span> <span class="nn">pisa.utils</span> <span class="kn">import</span> <span class="n">vectorizer</span>
 <span class="kn">from</span> <span class="nn">pisa.utils</span> <span class="kn">import</span> <span class="n">kde_hist</span>
+<span class="kn">from</span> <span class="nn">pisa_tests.test_services</span> <span class="kn">import</span> <span class="n">TEST_BINNING</span>
 
 
 <div class="viewcode-block" id="kde">
 <a class="viewcode-back" href="../../../../pisa.stages.utils.html#pisa.stages.utils.kde.kde">[docs]</a>
-<span class="k">class</span> <span class="nc">kde</span><span class="p">(</span><span class="n">Stage</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">kde</span><span class="p">(</span><span class="n">Stage</span><span class="p">):</span>  <span class="c1"># pylint: disable=invalid-name</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;stage to KDE-map events</span>
 
 <span class="sd">    Parameters</span>
@@ -163,26 +158,27 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bootstrap</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">stashed_errors</span> <span class="o">=</span> <span class="kc">None</span>
 
+        <span class="n">supported_reps</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;calc_mode&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;events&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;apply_mode&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">MultiDimBinning</span><span class="p">],</span>
+        <span class="p">}</span>
+
         <span class="c1"># init base class</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">expected_params</span><span class="o">=</span><span class="p">(),</span>
+            <span class="n">expected_container_keys</span><span class="o">=</span><span class="p">(),</span>
+            <span class="n">supported_reps</span><span class="o">=</span><span class="n">supported_reps</span><span class="p">,</span>
             <span class="o">**</span><span class="n">std_kargs</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_mode</span> <span class="o">==</span> <span class="s2">&quot;events&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">regularized_apply_mode</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="kde.setup_function">
 <a class="viewcode-back" href="../../../../pisa.stages.utils.html#pisa.stages.utils.kde.kde.setup_function">[docs]</a>
     <span class="k">def</span> <span class="nf">setup_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">apply_mode</span><span class="p">,</span> <span class="n">MultiDimBinning</span>
-        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;KDE stage needs a binning as `apply_mode`, but is </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">apply_mode</span><span class="si">}</span><span class="s2">&quot;</span>
-
         <span class="c1"># For dimensions that are logarithmic, we add a linear binning in</span>
         <span class="c1"># the logarithm (but only if this feature is enabled)</span>
-
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">linearize_log_dims</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">regularized_apply_mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_mode</span>
             <span class="k">return</span>
@@ -216,11 +212,24 @@
 <a class="viewcode-back" href="../../../../pisa.stages.utils.html#pisa.stages.utils.kde.kde.apply">[docs]</a>
     <span class="nd">@profile</span>
     <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># this is special, we want the actual event weights in the kde</span>
-        <span class="c1"># therefor we&#39;re overwritting the apply function</span>
-        <span class="c1"># normally in a stage you would implement the `apply_function` method</span>
-        <span class="c1"># and not the `apply` method!</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This is special, we want the actual event weights in the kde</span>
+<span class="sd">        therefor we&#39;re overwritting the apply function</span>
+<span class="sd">        normally in a stage you would implement the `apply_function` method</span>
+<span class="sd">        and not the `apply` method! We also have to reimplement the profiling</span>
+<span class="sd">        functionality in apply of the Base class&quot;&quot;&quot;</span>
 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">:</span>
+            <span class="n">start_t</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">apply_function</span><span class="p">()</span>
+            <span class="n">end_t</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">apply_times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">end_t</span> <span class="o">-</span> <span class="n">start_t</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">apply_function</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="kde.apply_function">
+<a class="viewcode-back" href="../../../../pisa.stages.utils.html#pisa.stages.utils.kde.kde.apply_function">[docs]</a>
+    <span class="k">def</span> <span class="nf">apply_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stash_valid</span><span class="p">:</span>
@@ -369,6 +378,13 @@
 <span class="c1"># into the main scope and thus overshadow `kde` (the module).</span>
 <span class="c1"># The unit test for this stage is therefore instead placed in</span>
 <span class="c1"># pisa/pisa_tests/test_kde_stage.py</span>
+
+<div class="viewcode-block" id="init_test">
+<a class="viewcode-back" href="../../../../pisa.stages.utils.html#pisa.stages.utils.kde.init_test">[docs]</a>
+<span class="k">def</span> <span class="nf">init_test</span><span class="p">(</span><span class="o">**</span><span class="n">param_kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialisation example&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">kde</span><span class="p">(</span><span class="n">calc_mode</span><span class="o">=</span><span class="s1">&#39;events&#39;</span><span class="p">,</span> <span class="n">apply_mode</span><span class="o">=</span><span class="n">TEST_BINNING</span><span class="p">)</span></div>
+
 </pre></div>
 
            </div>
